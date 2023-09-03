@@ -1,76 +1,94 @@
 import 'package:flutter/material.dart';
+import 'package:test_3/pages/home.dart';
+import 'package:test_3/pages/cart.dart';
+import 'package:test_3/pages/login.dart';
+import 'package:test_3/pages/profile.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 void main() {
   runApp(
     const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Home',
-      home: NewApp(),
+      home: LoginPage(),
     ),
   );
 }
 
-class NewApp extends StatefulWidget {
-  const NewApp({super.key});
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
 
   @override
-  State<NewApp> createState() => _NewAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-var count = 0;
+class _MyAppState extends State<MyApp> {
+  int currentIndex = 0;
 
-class _NewAppState extends State<NewApp> {
+  List<Widget> screens = [
+    const HomeScreen(),
+    const CartScreen(),
+    const ProfileScreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 185, 203, 253),
-        appBar: AppBar(
-          leading: const Icon(Icons.menu),
-          title: const Text(
-            'Apple',
-            style: TextStyle(color: Color.fromARGB(255, 234, 237, 149)),
-          ),
-          backgroundColor: Color.fromARGB(255, 132, 151, 245),
-          actions: const [Icon(Icons.search), Icon(Icons.more_vert)],
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        //title:  Text("Home Page", style: GoogleFonts.tulpenOne()),
+        centerTitle: false,
+        automaticallyImplyLeading: false,
+        title: Image.asset(
+          "assets/images/insta.png",
+          fit: BoxFit.contain,
+          height: 40,
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+        // title: Text("Home Page", style: GoogleFonts.luckiestGuy(fontSize: 20, color:Colors.black),),
+        //const Icon(FontAwesomeIcons.facebookMessenger, color: Colors.black, ),
+        actions: [
+          Column(
             children: [
-              const Text(
-                "the count: ",
-                style: TextStyle(fontSize: 20),
-              ),
-              const Text(
-                "0",
-                style: TextStyle(fontSize: 20),
-              ),
-              Column(
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      print(count);
-                      setState(() {
-                         count++;
-                      });
-                      print(count);
-                    },
-                    child: const Text("Plus", style: TextStyle(fontSize: 30)),
-                  ),
-                                TextButton(
-                onPressed: () {
-                  print(count);
-                  setState(() {
-                     count--;
-                  });
-                  print(count);
-                },
-                child: const Text("Minus", style: TextStyle(fontSize: 30)),
-              )
-                ],
-              )
-              
+              Container(
+                  width: 30,
+                  height: 30,
+                  margin: const EdgeInsets.fromLTRB(0, 15, 10, 0),
+                  child: const Image(
+                    image: AssetImage('assets/images/mess.png'),
+                    fit: BoxFit.fill,
+                  )),
             ],
           ),
-        ));
+        ],
+      ),
+      body: screens[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color.fromARGB(255, 189, 221, 247),
+        currentIndex: currentIndex,
+        onTap: (tappedIndex) {
+          setState(() {
+            currentIndex = tappedIndex;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
+              backgroundColor: Colors.white),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: "Cart"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+      // drawer: const Drawer(
+      //   child: SizedBox(
+      //     height: double.infinity,
+      //     width: 100,
+      //     child: Image(
+      //       image: AssetImage('assets/images/apple.png'),
+      //     ),
+      //   ),
+      // ),
+    );
   }
 }
